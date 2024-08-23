@@ -1,47 +1,49 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
+import Map from './components/Map.vue'
+import Results from './components/Results.vue'
+import data from './assets/data.json'
+import { ref } from 'vue';
+
+const selectedCity = ref("")
+const hoveredCity = ref({})
+
+function cityClicked(city) {
+  selectedCity.value = city
+}
+
+function cityHovered(city) {
+  hoveredCity.value = city;
+}
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-    </div>
+  <header class="m-8">
+    <h1 className="text-4xl font-extrabold leading-none">
+      Urfehdenkarte
+    </h1>
   </header>
 
-  <main>
-    <TheWelcome />
+  <main class="m-8 space-x-6 flex justify-around">
+    <div id="mapcontainer">
+      <Map @cityclicked="cityClicked" img_src="/map.gif" :data="data" :hoveredCity="hoveredCity"/>
+    </div>
+    <div id="rescontainer" class="flex-1">
+      <Results @cityhover="cityHovered" :data="data" :selectedCity="selectedCity" />
+    </div>
   </main>
 </template>
 
 <style scoped>
-header {
-  line-height: 1.5;
+main {
+  max-height: 80vh;
+  min-height: 80vh;
 }
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
+#mapcontainer {
+  flex: 1;
 }
 
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
+#rescontainer {
+  flex: 1;
 }
 </style>
